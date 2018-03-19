@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}
+{{profile.user}}'s Profile
+{% endblock pagetitle %}
+
+{% block content %}
+
+<div class="row">
+		<div class="col-lg-12">
+			<div class="jumbotron jumbotron-customized">
+				<div class="row">
+		  			<div class="col-lg-4">
+		  				<img src="{{profile.profile_image.url}}" width="200" height="200" alt="..." class="img-thumbnail">
+		  			</div>
+		  			<div class="col-lg-8">
+		  				<h1>{{profile.user}}</h1>
+		  				<p>{{profile.profile_bio}}</p>	
+		  			</div>
+	  			</div>	
+			</div>
+		</div>
+</div>
+
+<div class="row">
+	{% for post in posts %}
+	<div class="col-lg-4">
+		<div class="card">
+		  <img class="card-img-top" src="{{post.image.url}}" alt="post image">
+		  <div class="card-body">
+		    <p class="card-text">{{post.caption}}</p>
+	<!-- 	    <a href="#" class="btn btn-primary">Go somewhere</a>
+	 -->	  </div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock content %}

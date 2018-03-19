@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}
+ Let's Hangout!
+{% endblock pagetitle %}
+
+{% block content %}
+<div class="row">
+	{% for post in posts %}
+	<div class="col-lg-4">
+		<div class="card">
+		  <a class="navbar-brand profile-link" href="{% url 'profile' post.user.id %}">
+		    <img src="{{post.user.profile_image.url}}" width="45" height="45" class="d-inline-block align-top rounded-circle" alt="profile image">
+		    <span class="user-username">{{post.user}}</span>
+		  </a>
+		  <img class="card-img-top" src="{{post.image.url}}" alt="post image">
+		  <div class="card-body">
+		    <p class="card-text">{{post.caption}}</p>
+	<!-- 	    <a href="#" class="btn btn-primary">Go somewhere</a>
+	 -->	  </div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock content %}
