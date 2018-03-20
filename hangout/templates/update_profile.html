@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block pagetitle %}
+Signup
+{% endblock pagetitle %}
+
+{% block content %}
+
+<div class="row">
+		<div class="col-lg-12">
+			<form action="{% url 'update_profile' profile_id=profile.id %}" method="POST" enctype="multipart/form-data">
+			    {% csrf_token %}
+			    {{form|crispy}}
+			    <input type="submit" value="Update">
+			</form>
+		</div>
+</div>
+
+{% endblock content %}

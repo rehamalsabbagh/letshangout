@@ -23,7 +23,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('profile/<int:profile_id>', views.profile, name='profile'),
-
+    path('signup/', views.signup, name='signup'),
+    path('update_profile/<int:profile_id>', views.update_profile, name='update_profile'),
+    path('create_post/', views.create_post, name="create_post"),
+    path('login/', views.user_login, name="login"),
+    path('logout/', views.user_logout, name="logout"),
+    path('favorite_post/<int:post_id>/', views.favorite_post, name="favorite_post"),
 ]
 
 urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

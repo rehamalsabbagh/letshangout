@@ -16,11 +16,38 @@
 		  <img class="card-img-top" src="{{post.image.url}}" alt="post image">
 		  <div class="card-body">
 		    <p class="card-text">{{post.caption}}</p>
-	<!-- 	    <a href="#" class="btn btn-primary">Go somewhere</a>
-	 -->	  </div>
+
+		    <button class="btn btn-secondary custom-button" onclick="favoritebutton({{post.id}})">
+			  	<i id="fav-shape-{{post.id}}" class="fas fa-star {% if post in fav_posts %}text-warning{% endif %}"></i>
+			  	<span id="fav-text-{{post.id}}">{{post.favoritepost_set.count}}</span>
+			  </button>
+		  </div>
 		</div>
 	</div>
 	{% endfor %}
 </div>
+<script type="text/javascript">
+	function favoritebutton(id){
+		$.ajax({
+			type:'GET',
+			url:'/favorite_post/'+id+'/',
+			error: function(data){
+				console.log('Not Working!')
+			},
+			success: function(data){
+				console.log(data);
+				if(data.action=='fav'){
+					$('#fav-shape-'+id).addClass('text-warning');
+					$('#fav-text-'+id).text(data.fav_num);
 
+				}
+				else{
+					$('#fav-shape-'+id).removeClass('text-warning');
+					$('#fav-text-'+id).text(data.fav_num);
+				}
+
+			},
+		});
+	}
+</script>
 {% endblock content %}
