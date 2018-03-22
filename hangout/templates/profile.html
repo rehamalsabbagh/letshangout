@@ -11,11 +11,133 @@
 			<div class="jumbotron jumbotron-customized">
 				<div class="row">
 		  			<div class="col-lg-4">
-		  				<img src="{{profile.profile_image.url}}" width="200" height="200" alt="..." class="img-thumbnail">
+		  				<img src="{{profile.profile_image.url}}" width="200" height="200" alt="..." class="rounded-circle p-img">
 		  			</div>
 		  			<div class="col-lg-8">
 		  				<h1>{{profile.user}}</h1>
-		  				<p>{{profile.profile_bio}}</p>	
+		  				<p>{{profile.profile_bio}}</p>
+		  				{% if is_my_profile %}
+		  				<a href="{% url 'update_profile' profile_id=profile.id %}">Edit my profile <i class="fas fa-cog"></i></a>
+		  				{% endif %}
+		  				<br><br>
+		  				<div class="row">
+
+							<button type="button" class="col-lg-2 follow-block inline-space" data-toggle="modal" data-target="#exampleModal">
+			  					Following
+			  					{{followers.count}}
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">Following</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+										<div class="col-lg-12">
+											<ul class="list-group list-group-flush">
+											{% for profile in followers %}
+											  <li class="list-group-item"><a href="{% url 'profile' profile_id=profile.me.id %}"><img class="profile-image" src="{{profile.me.profile_image.url}}"" alt="profile-image">{{profile.me.user}}</a></li>
+											{% endfor %}
+
+											</ul>
+										</div>
+							      </div>
+
+							    </div>
+							  </div>
+							</div>
+
+
+							<button id="followers-button" type="button" class="col-lg-2 follow-block inline-space" data-toggle="modal" data-target="#exampleModal2">
+			  					Followers
+			  					{{following.count}}
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">Followers</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+										<div class="col-lg-12">
+											<ul class="list-group list-group-flush">
+											{% for profile in following %}
+											  <li class="list-group-item"><a href="{% url 'profile' profile_id=profile.me.id %}"><img class="profile-image" src="{{profile.me.profile_image.url}}"" alt="profile-image">{{profile.me.user}}</a></li>
+											{% endfor %}
+
+											</ul>
+										</div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+
+
+							 {% if is_my_profile %}		  	
+
+							<button id="followers-button" type="button" class="col-lg-2 follow-block inline-space" data-toggle="modal" data-target="#exampleModal3">
+			  					My Favorites
+			  		
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">Favorites</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+										<div class="col-lg-12">
+											
+											{% for post in my_favs %}
+
+												<div class="col-lg-12">
+													<div class="card">
+													  <a class="navbar-brand profile-link" href="{% url 'profile' post.user.id %}">
+													    <img src="{{post.user.profile_image.url}}" width="45" height="45" class="d-inline-block align-top rounded-circle" alt="profile image">
+													    <span class="user-username">{{post.user}}</span>
+													  </a>
+													  <img class="card-img-top" src="{{post.image.url}}" alt="post image">
+													  <div class="card-body">
+													    <p class="card-text">{{post.caption}}</p>
+
+												<!-- 	    <a href="#" class="btn btn-primary">Go somewhere</a>
+												 -->	  </div>
+													</div>
+												</div>
+											{% endfor %}
+
+											
+										</div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							{% endif %}
+
+
+
+			  				<div class="col-lg-4">
+			  					{% if is_my_profile %}
+			  					{% else %}
+			  							<button id="follow-button" class="follow-block" onclick="follow({{profile.id}})">{% if iexist %}Unfollow{% else %}Follow{% endif %}</button>
+			  					{% endif %}
+			  				</div>
+		  				</div>
 		  			</div>
 	  			</div>	
 			</div>
@@ -23,17 +145,86 @@
 </div>
 
 <div class="row">
+{% if is_my_profile %}
+	<div class="col-lg-4">
+		<div class="card">
+		  <a href="{% url 'create_post' profile_id=profile.id %}"><img class="card-img-top" style="padding:45%; border-bottom:1px solid lightgray;" src="https://www.iconsdb.com/icons/preview/gray/plus-8-xxl.png" alt="post image"></a>
+		<div class="card-body">
+			<p class="card-text">Suggest a new hangout!<br><br><br><br></p>
+		</div>
+		</div>
+	</div>
+{% endif %}
+
 	{% for post in posts %}
 	<div class="col-lg-4">
 		<div class="card">
 		  <img class="card-img-top" src="{{post.image.url}}" alt="post image">
 		  <div class="card-body">
 		    <p class="card-text">{{post.caption}}</p>
+		    <button class="btn btn-secondary custom-button" onclick="favoritebutton({{post.id}})">
+			  	<i id="fav-shape-{{post.id}}" class="fas fa-star {% if post in fav_posts %}text-warning{% endif %}"></i>
+			  	<span id="fav-text-{{post.id}}">{{post.favoritepost_set.count}}</span>
+			  </button>
+			  {% if is_my_profile %}
+			  
+			  	<a href="{% url 'delete' post_id=post.id profile_id=profile.id %}"><i class="fas fa-trash-alt"></i></a>
+			  	
+			  
+			  {% endif %}
 	<!-- 	    <a href="#" class="btn btn-primary">Go somewhere</a>
 	 -->	  </div>
 		</div>
 	</div>
 	{% endfor %}
 </div>
+
+<script type="text/javascript">
+	function favoritebutton(id){
+		$.ajax({
+			type:'GET',
+			url:'/favorite_post/'+id+'/',
+			error: function(data){
+				console.log('Not Working!')
+			},
+			success: function(data){
+				console.log(data);
+				if(data.action=='fav'){
+					$('#fav-shape-'+id).addClass('text-warning');
+					$('#fav-text-'+id).text(data.fav_num);
+
+				}
+				else{
+					$('#fav-shape-'+id).removeClass('text-warning');
+					$('#fav-text-'+id).text(data.fav_num);
+				}
+
+			},
+		});
+	}
+
+	function follow(id){
+		$.ajax({
+			type:'GET',
+			url:'/follow/'+id+'/',
+			error: function(data){
+				console.log('Not Working!')
+			},
+			success: function(data){
+				console.log(data);
+				if(data.action=='follow'){
+					$('#follow-button').text('Unfollow');
+					$('#followers-button').text('Followers\n'+data.followers_count);
+				}
+				else{
+					$('#follow-button').text('Follow');
+					$('#followers-button').text('Followers\n'+data.followers_count);
+
+				}
+
+			},
+		});
+	}
+</script>
 
 {% endblock content %}

@@ -6,6 +6,9 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields= ['first_name','last_name','username','email','password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
 
 class UpdateProfile(forms.ModelForm):
     class Meta:
@@ -16,7 +19,7 @@ class UpdateProfile(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['image','caption']
 
         
 class LoginForm(forms.Form):

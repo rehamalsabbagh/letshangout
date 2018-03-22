@@ -25,10 +25,15 @@ urlpatterns = [
     path('profile/<int:profile_id>', views.profile, name='profile'),
     path('signup/', views.signup, name='signup'),
     path('update_profile/<int:profile_id>', views.update_profile, name='update_profile'),
-    path('create_post/', views.create_post, name="create_post"),
+    path('create_post/<int:profile_id>', views.create_post, name="create_post"),
     path('login/', views.user_login, name="login"),
     path('logout/', views.user_logout, name="logout"),
     path('favorite_post/<int:post_id>/', views.favorite_post, name="favorite_post"),
+    path('search_profile/', views.search_profile, name="search_profile"),
+    path('follow/<int:profile_id>/', views.follow, name="follow"),
+    path('delete/<int:post_id>/<int:profile_id>/', views.delete, name="delete"),
+
+
 ]
 
 urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
